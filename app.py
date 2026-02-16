@@ -15,7 +15,7 @@ load_dotenv()  # This loads the password from the .env file
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': os.getenv('momdad@com'),  # Securely grabs password
+    'password': os.getenv('your_password'),  # Securely grabs password
     'database': 'loan_database'
 }
 
