@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoanGuard AI | Smart Lending</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Widget Position */
+        #chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: sans-serif; }
+        /* ... rest of your CSS ... */
+    </style>
+</head>
+    <style>
+    /* Widget Position */
+    #chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: sans-serif; }
+    
+    /* Toggle Button */
+    #chat-btn {
+        width: 60px; height: 60px; border-radius: 50%; background: #2563EB; color: white;
+        border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+    }
+    #chat-btn:hover { transform: scale(1.1); }
+
+    /* Chat Window */
+    #chat-window {
+        position: absolute; bottom: 80px; right: 0; width: 340px; height: 450px;
+        background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0;
+    }
+    .hidden { display: none !important; }
+
+    /* Header */
+    .chat-header {
+        background: #2563EB; color: white; padding: 15px; font-weight: bold;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .chat-header button { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+
+    /* Messages */
+    #chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
+    
+    .message { display: flex; max-width: 80%; }
+    .bot { align-self: flex-start; }
+    .user { align-self: flex-end; }
+    
+    .bubble { padding: 10px 14px; border-radius: 15px; font-size: 0.9rem; line-height: 1.4; }
+    .bot .bubble { background: #e2e8f0; color: #1e293b; border-bottom-left-radius: 2px; }
+    .user .bubble { background: #2563EB; color: white; border-bottom-right-radius: 2px; }
+
+    /* 👇 SUGGESTIONS STYLING 👇 */
+    .chat-suggestions {
+        padding: 10px; background: white; border-top: 1px solid #f1f5f9;
+        display: flex; gap: 8px; overflow-x: auto; white-space: nowrap;
+    }
+    .chat-suggestions button {
+        background: #eff6ff; color: #2563EB; border: 1px solid #dbeafe;
+        padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer;
+        transition: background 0.2s;
+    }
+    .chat-suggestions button:hover { background: #2563EB; color: white; }
+
+    /* Input */
+    .chat-input { display: flex; padding: 10px; border-top: 1px solid #e2e8f0; }
+    .chat-input input { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 20px; outline: none; }
+    .chat-input button { background: none; border: none; color: #2563EB; margin-left: 10px; font-size: 1.2rem; cursor: pointer; }
+</style>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span>LoanGuard AI</span>
+            </a>
+
+            <ul class="nav-menu">
+    <li><a href="/" class="nav-link">Home</a></li>
+    
+    <li><a href="/apply" class="nav-link">Predict Now</a></li>
+    
+    <li><a href="/status" class="nav-link">Check Status</a></li>
+    
+    <li><a href="/admin-login" class="nav-link">Admin</a></li>
+    <li><a href="/about" class="nav-link">About</a></li>
+</ul>
+<div id="chat-widget">
+    <button id="chat-btn" onclick="toggleChat()">
+        <i class="fa-solid fa-comment-dots"></i>
+    </button>
+
+    <div id="chat-window" class="hidden">
+        
+        <div class="chat-header">
+            <span><i class="fa-solid fa-robot"></i> Loan Assistant</span>
+            <button onclick="toggleChat()">✖</button>
+        </div>
+
+        <div id="chat-messages">
+            <div class="message bot">
+                <div class="bubble">
+                    Hello! 👋 How can I help you today?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-suggestions">
+            <button onclick="sendOption('How to Apply?')">📝 How to Apply?</button>
+            <button onclick="sendOption('Documents Required')">📄 Documents?</button>
+            <button onclick="sendOption('Check Status')">🔍 Check Status</button>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type a message..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+
+    </div>
+</div>
+
+            <div class="nav-auth">
+                <a href="/login" class="btn-login">Login / Sign Up</a>
+            </div>
+
+            <div class="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+    
+
+
+    <header class="hero-section">
+        <div class="container hero-layout">
+            
+            <div class="hero-text">
+                <div class="badge">
+                    <i class="fa-solid fa-bolt"></i> AI Powered V1.0
+                </div>
+                <h1>Smart Lending Decisions in Seconds.</h1>
+                <p class="sub-headline">
+                    Use our machine learning-powered engine to predict loan eligibility instantly based on income, credit history, and asset data.
+                </p>
+                
+                <div class="cta-group">
+                    <a href="/predict" class="btn-primary">
+                        Predict Loan Eligibility Now <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="/doc" class="btn-secondary">
+                        View Documentation
+                    </a>
+                </div>
+
+                <div class="trust-metrics">
+                    <div class="metric">
+                        <span class="number">98%</span>
+                        <span class="label">Accuracy</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="metric">
+                        <span class="number">24/7</span>
+                        <span class="label">Availability</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart-circle">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h3>Approved</h3>
+                        <p>Confidence Score: <strong>92%</strong></p>
+                        <div class="loading-bar">
+                            <div class="fill"></div>
+                        </div>
+                    </div>
+                    <div class="float-badge">
+                        <i class="fa-solid fa-robot"></i> ML Model Ready
+                    </div>
+                </div>
+                <div class="blur-circle"></div>
+            </div>
+
+        </div>
+    </header>
+  <script>
+    function toggleChat() {
+        document.getElementById('chat-window').classList.toggle('hidden');
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    // Function to handle clicking a suggestion chip
+    function sendOption(text) {
+        document.getElementById('user-input').value = text;
+        sendMessage();
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('user-input');
+        const text = input.value.trim();
+        const msgBox = document.getElementById('chat-messages');
+        
+        if (!text) return;
+
+        // 1. Show User Message
+        msgBox.innerHTML += `<div class="message user"><div class="bubble">${text}</div></div>`;
+        input.value = '';
+        msgBox.scrollTop = msgBox.scrollHeight;
+
+        // 2. Send to Python
+        fetch('/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: text})
+        })
+        .then(res => res.json())
+        .then(data => {
+            // 3. Show Bot Response
+            msgBox.innerHTML += `<div class="message bot"><div class="bubble">${data.response}</div></div>`;
+            msgBox.scrollTop = msgBox.scrollHeight;
+        });
+    }
+</script> 
+
+
+</body>
+<footer class="footer">
+    <div class="footer-container">
+        
+        <div class="footer-col">
+            <div class="footer-logo">
+                <i class="fa-solid fa-shield-halved"></i> LoanGuard AI
+            </div>
+            <p>
+                Empowering your financial future with AI-driven loan approvals. 
+                Fast, secure, and transparent.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/apply">Apply Now</a></li>
+                <li><a href="/status">Track Status</a></li>
+                <li><a href="/admin-login">Admin Login</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><i class="fa-solid fa-location-dot"></i> Bangalore, Karnataka</li>
+                <li><i class="fa-solid fa-envelope"></i> support@loanguard.com</li>
+                <li><i class="fa-solid fa-phone"></i> +919164665917</li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 LoanGuard AI. All Rights Reserved. | <a href="#">Privacy Policy</a></p>
+    </div>
+</footer>
+</html>

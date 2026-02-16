@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | LoanGuard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<style>
+    tr,th,td{
+        padding:10px;
+        border:1px solid black;
+    }
+</style>
+<body class="bg-light">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <span>LoanGuard Admin</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/logout" class="nav-link" style="color: #ef4444; font-weight: bold;">Logout <i class="fa-solid fa-right-from-bracket"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 40px; max-width: 1200px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>Loan Applications</h1>
+            <button class="btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Report</button>
+        </div>
+        
+        <div class="table-responsive" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Applicant</th>
+                        <th>Location & Bank</th> 
+                        <th>Income ($)</th>
+                        <th>Loan Amt ($)</th>
+                        <th>Credit</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in applicants %}
+                    <tr>
+                        <td style="font-weight: bold;">#{{ row[0] }}</td>
+
+                        <td>
+                            <div style="font-weight: 600;">{{ row[1] }}</div>
+                            <div style="font-size: 0.85rem; color: #64748b;">{{ row[4] }}</div>
+                        </td>
+
+                        <td>
+                            <div style="font-weight: 500;">{{ row[6] }}, {{ row[5] }}</div>
+                            <div style="font-size: 0.8rem; color: #2563EB;">
+                                <i class="fa-solid fa-building-columns"></i> {{ row[7] }}
+                            </div>
+                        </td>
+
+                        <td>${{ row[10] }}</td>
+
+                        <td>${{ row[12] }}</td>
+
+                        <td>
+                            {% if row[14] == 1.0 %}
+                                <span style="color: #2563EB; background: #dbeafe; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">Good</span>
+                            {% else %}
+                                <span style="color: #475569; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">Bad</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if row[16] == 'Approved' %}
+                                <span style="color: #166534; background: #dcfce7; padding: 6px 12px; border-radius: 20px; font-weight: 700;">
+                                    <i class="fa-solid fa-check"></i> Approved
+                                </span>
+                            {% else %}
+                                <span style="color: #991b1b; background: #fee2e2; padding: 6px 12px; border-radius: 20px; font-weight: 700;">
+                                    <i class="fa-solid fa-xmark"></i> Rejected
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td style="color: #64748b; font-size: 0.85rem;">{{ row[17] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

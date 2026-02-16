@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login | LoanGuard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #f1f5f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+
+    <div class="form-card" style="width: 100%; max-width: 400px; padding: 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        
+        <div class="logo-icon" style="font-size: 3rem; color: #2563EB; margin-bottom: 10px;">
+            <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h2 style="margin-bottom: 20px; color: #1e293b;">Admin Portal</h2>
+
+        {% if error %}
+            <div style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; margin-bottom: 20px;">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form action="/admin-login" method="POST">
+            <div class="input-group" style="margin-bottom: 20px; text-align: left;">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Enter username" required style="width: 100%;">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 30px; text-align: left;">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter password" required style="width: 100%;">
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 1.1rem;">
+                Login <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+        
+        <p style="margin-top: 20px;">
+            <a href="/" style="text-decoration: none; color: #64748b;">← Back to Home</a>
+        </p>
+    </div>
+
+</body>
+</html>

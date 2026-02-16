@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Loan | LoanGuard AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <span>LoanGuard AI</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/about" class="nav-link active">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container form-page">
+        <div class="form-header">
+            <h1>Loan Application</h1>
+            <p>Complete the form below to get an instant eligibility decision.</p>
+        </div>
+
+        <form action="/predict" method="POST" class="application-form">
+            
+            <div class="form-grid">
+                
+                <div class="form-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-user"></i>
+                        <h3>Personal Details</h3>
+                    </div>
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" name="full_name" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Date of Birth</label>
+                            <input type="date" name="dob" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" placeholder="+1 234 567 890" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                 
+                    <div class="input-row">
+                    <div class="input-group">
+                        <label>State</label>
+                        <input type="text" name="state" placeholder="e.g. Karnataka" required>
+                    </div>
+                    <div class="input-group">
+                        <label>District</label>
+                        <input type="text" name="district" placeholder="e.g. Bangalore" required>
+                    </div>
+                     </div>
+
+                    <div class="input-group">
+                    <label>Bank Name</label>
+                    <input type="text" name="bank_name" placeholder="e.g. SBI, HDFC" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Current Address</label>
+                        <textarea name="address" rows="3" placeholder="Enter full address"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Need of Loan (Purpose)</label>
+                        <select name="loan_purpose">
+                            <option value="housing">Home Purchase</option>
+                            <option value="renovation">Renovation</option>
+                            <option value="construction">Construction</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <h3>Financial & Loan Details</h3>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Marital Status</label>
+                            <select name="married">
+                                <option value="No">Single</option>
+                                <option value="Yes">Married</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Dependents</label>
+                            <select name="dependents">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3+">3+</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Education</label>
+                            <select name="education">
+                                <option value="Graduate">Graduate</option>
+                                <option value="Not Graduate">Not Graduate</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Self Employed</label>
+                            <select name="self_employed">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Applicant Income ($)</label>
+                            <input type="number" name="applicant_income" placeholder="5000" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Co-Applicant Income ($)</label>
+                            <input type="number" name="coapplicant_income" placeholder="0" value="0">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Loan Amount ($)</label>
+                            <input type="number" name="loan_amount" placeholder="150000" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Term (Months)</label>
+                            <input type="number" name="loan_amount_term" placeholder="360" value="360">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Credit History</label>
+                            <select name="credit_history">
+                                <option value="1.0">Good (1.0)</option>
+                                <option value="0.0">Bad (0.0)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Property Area</label>
+                            <select name="property_area">
+                                <option value="Urban">Urban</option>
+                                <option value="Semiurban">Semiurban</option>
+                                <option value="Rural">Rural</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    Check Eligibility <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+personal requirements:
+full_name VARCHAR(100),
+date_of_birth DATE,
+gender ENUM('Male','Female','Other'),
+marital_status ENUM('Single','Married','Divorced','Widowed'),
+dependents INT,
+email VARCHAR(100),
+phone VARCHAR(20),
+address TEXT,
+
+loan application requirements:
+Customer_ID	Gender
+Married	Dependents
+Education	
+Self_Employed	
+Applicant_Income	
+Coapplicant_Income	
+Loan_Amount	Loan_Amount_Term	
+Credit_History	
+Property_Area	
+Loan_Status

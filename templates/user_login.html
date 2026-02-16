@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Login | LoanGuard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="container" style="max-width: 400px; margin-top: 50px;">
+        <div class="form-card" style="padding: 30px;">
+            <h2 style="text-align: center;">User Login</h2>
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <p style="color: red; text-align: center;">{{ messages[0] }}</p>
+                {% endif %}
+            {% endwith %}
+
+            <form action="/login" method="POST">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required style="width: 100%;">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required style="width: 100%;">
+                </div>
+                <button type="submit" class="btn-submit" style="width: 100%; margin-top: 10px;">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 10px;">
+                New here? <a href="/register">Register</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

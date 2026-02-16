@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | LoanGuard AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563EB;
+            --secondary: #1e293b;
+            --bg: #f8fafc;
+            --text: #334155;
+            --border: #e2e8f0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: white;
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar h2 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-links a {
+            display: block;
+            padding: 10px;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover {
+            background: #eff6ff;
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 290px;
+            padding: 40px;
+            max-width: 900px;
+        }
+        section {
+            margin-bottom: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        h1 { font-size: 2.5rem; color: var(--secondary); margin-top: 0; }
+        h2 { border-bottom: 2px solid var(--border); padding-bottom: 10px; color: var(--secondary); }
+        h3 { color: var(--primary); margin-top: 25px; }
+        p { line-height: 1.6; }
+        
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+        th { background: #f1f5f9; color: var(--secondary); }
+
+        /* Code Blocks */
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        code { font-family: 'Courier New', monospace; }
+
+        /* Lists */
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        .tag {
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2><i class="fa-solid fa-book"></i> Docs</h2>
+        <div class="nav-links">
+            <a href="#overview">1. Overview</a>
+            <a href="#features">2. Key Features</a>
+            <a href="#tech-stack">3. Tech Stack</a>
+            <a href="#architecture">4. System Architecture</a>
+            <a href="#database">5. Database Schema</a>
+            <a href="#directory">6. Directory Structure</a>
+            <a href="#setup">7. Setup Guide</a>
+            <a href="#usage">8. User Manual</a>
+        </div>
+        <div style="margin-top: 30px; font-size: 0.8rem; color: #94a3b8;">
+            Version 1.0<br>Last Updated:12-02-2026
+        </div>
+    </div>
+
+    <div class="content">
+        
+        <header style="margin-bottom: 40px;">
+            <h1>Loan Approval Prediction System</h1>
+            <p style="font-size: 1.2rem; color: #64748b;">
+                A machine learning-powered web application for automating loan eligibility checks.
+            </p>
+            <div>
+                <span class="tag">Python</span>
+                <span class="tag">Flask</span>
+                <span class="tag">Machine Learning</span>
+                <span class="tag">MySQL</span>
+            </div>
+        </header>
+
+        <section id="overview">
+            <h2>1. Project Overview</h2>
+            <p>The <strong>Loan Approval Prediction System</strong> streamlines the loan application process by using historical data to predict whether an applicant is eligible. It reduces manual verification time and provides instant feedback to users.</p>
+            <p>The system includes a public-facing portal for applicants and a secure dashboard for bank administrators.</p>
+        </section>
+
+        <section id="features">
+            <h2>2. Key Features</h2>
+            <h3>For Applicants (Users)</h3>
+            <ul>
+                <li><strong>Instant Eligibility Check:</strong> AI-driven prediction (Approved/Rejected) based on income and credit score.</li>
+                <li><strong>Application Tracking:</strong> Check status using a unique Application ID.</li>
+                <li><strong>AI Chatbot:</strong> A built-in assistant to answer queries 24/7.</li>
+                <li><strong>Responsive UI:</strong> Works seamlessly on mobile and desktop.</li>
+            </ul>
+
+            <h3>For Administrators</h3>
+            <ul>
+                <li><strong>Secure Login:</strong> Password-protected admin dashboard.</li>
+                <li><strong>Data Visualization:</strong> View all applicants in a structured table.</li>
+                <li><strong>Report Generation:</strong> Print capabilities for offline records.</li>
+            </ul>
+        </section>
+
+        <section id="tech-stack">
+            <h2>3. Technology Stack</h2>
+            <table>
+                <tr>
+                    <th>Component</th>
+                    <th>Technology</th>
+                </tr>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>HTML5, CSS3, JavaScript (Chatbot)</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>Python (Flask Framework)</td>
+                </tr>
+                <tr>
+                    <td><strong>Database</strong></td>
+                    <td>MySQL (XAMPP/Localhost)</td>
+                </tr>
+                <tr>
+                    <td><strong>ML Model</strong></td>
+                    <td>Scikit-Learn (Random Forest/Logistic Regression)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="architecture">
+            <h2>4. System Architecture</h2>
+            <p>The system follows the <strong>MVC (Model-View-Controller)</strong> pattern:</p>
+            <ol>
+                <li><strong>View:</strong> HTML forms collect user data.</li>
+                <li><strong>Controller:</strong> Flask (Python) processes the input.</li>
+                <li><strong>Model:</strong> The ML Model (`model.pkl`) predicts the outcome.</li>
+                <li><strong>Database:</strong> Results are stored in MySQL for the Admin Dashboard.</li>
+            </ol>
+            
+        </section>
+
+        <section id="database">
+            <h2>5. Database Schema</h2>
+            <p><strong>Database Name:</strong> <code>loan_database</code></p>
+            
+            <h3>Table: applicants</h3>
+            <table>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>INT (PK)</td>
+                    <td>Auto-incrementing ID</td>
+                </tr>
+                <tr>
+                    <td><code>full_name</code></td>
+                    <td>VARCHAR</td>
+                    <td>Applicant Name</td>
+                </tr>
+                <tr>
+                    <td><code>applicant_income</code></td>
+                    <td>DECIMAL</td>
+                    <td>Monthly Income</td>
+                </tr>
+                <tr>
+                    <td><code>loan_status</code></td>
+                    <td>VARCHAR</td>
+                    <td><strong>Prediction (Approved/Rejected)</strong></td>
+                </tr>
+                <tr>
+                    <td><code>application_date</code></td>
+                    <td>TIMESTAMP</td>
+                    <td>Submission Date</td>
+                </tr>
+            </table>
+
+            <h3>Table: admins</h3>
+            <table>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>username</code></td>
+                    <td>VARCHAR</td>
+                    <td>Login Username</td>
+                </tr>
+                <tr>
+                    <td><code>password</code></td>
+                    <td>VARCHAR</td>
+                    <td>Login Password</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="directory">
+            <h2>6. Directory Structure</h2>
+            <pre>
+Loan_Approval_System/
+│
+├── app.py                # Main Application File
+├── model.pkl             # Trained ML Model
+├── train_model.py        # Model Training Script
+│
+├── static/
+│   └── style.css         # Styling
+│
+└── templates/
+    ├── index.html        # Home Page
+    ├── predict.html      # Application Form
+    ├── result.html       # Result Page
+    ├── status.html       # Track Status
+    ├── admin_login.html  # Admin Login
+    └── applicants.html   # Admin Dashboard</pre>
+        </section>
+
+        <section id="setup">
+            <h2>7. Setup Guide</h2>
+            <p>Follow these steps to run the project locally:</p>
+            
+            <h3>Step 1: Install Dependencies</h3>
+            <pre>pip install flask flask-mysqldb pandas numpy scikit-learn</pre>
+
+            <h3>Step 2: Setup Database</h3>
+            <p>Open MySQL Workbench and run the provided SQL script to create <code>loan_database</code>.</p>
+
+            <h3>Step 3: Run Application</h3>
+            <pre>python app.py</pre>
+            <p>Visit <code>http://127.0.0.1:5000/</code> in your browser.</p>
+        </section>
+
+        <section id="usage">
+            <h2>8. User Manual</h2>
+            <h3>Applying for a Loan</h3>
+            <ol>
+                <li>Click <strong>Apply Now</strong> on the homepage.</li>
+                <li>Fill in your income, loan amount, and credit history.</li>
+                <li>Submit to see if you are Approved or Rejected instantly.</li>
+            </ol>
+
+            <h3>Admin Access</h3>
+            <ol>
+                <li>Click <strong>Admin Login</strong> (Lock Icon).</li>
+                <li>Login with <code>admin</code> / <code>admin123</code>.</li>
+                <li>View, manage, and print the list of applicants.</li>
+            </ol>
+        </section>
+
+    </div>
+
+</body>
+</html>
