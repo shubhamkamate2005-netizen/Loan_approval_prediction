@@ -207,10 +207,122 @@ ul { list-style: none; }
     display: flex;
     justify-content: center;
 }
+/* --- Track Status Styles --- */
 
+.status-container {
+    max-width: 600px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.status-form-card {
+    text-align: center;
+    padding: 40px;
+}
+
+.status-form {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.status-input {
+    padding: 12px;
+    width: 60%;
+    font-size: 1.1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.status-btn {
+    padding: 12px 24px;
+}
+
+.status-result-card {
+    margin-top: 20px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    animation: popIn 0.5s ease-out forwards;
+}
+
+.status-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.status-result-title {
+    margin: 0;
+    color: #1e293b;
+}
+
+.status-result-date {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.status-result-text {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.status-result-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.status-badge-approved {
+    color: #166534;
+    background: #dcfce7;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.status-badge-rejected {
+    color: #991b1b;
+    background: #fee2e2;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.status-error-box {
+    margin-top: 20px;
+    color: #ef4444;
+    text-align: center;
+    background: #fef2f2;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #fee2e2;
+}
+
+.status-error-text {
+    margin: 0;
+}
+
+/* Animation for the result card */
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 .glass-card {
     background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
+   
     border: 1px solid rgba(255, 255, 255, 0.6);
     padding: 30px;
     border-radius: 24px;
@@ -265,7 +377,180 @@ ul { list-style: none; }
     height: 100%;
     background: var(--accent);
 }
+/* --- Admin Login Styles --- */
 
+.admin-body {
+    background-color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background-color: #ffffff; /* Added so it pops against the grey body */
+    border-radius: 12px;       /* Added for a smoother card look */
+    box-sizing: border-box;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    color: #2563EB;
+    margin-bottom: 10px;
+}
+
+.admin-title {
+    margin-bottom: 20px;
+    color: #1e293b;
+}
+
+.error-alert {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.last-group {
+    margin-bottom: 30px;
+}
+
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+}
+
+.back-link-wrapper {
+    margin-top: 20px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #64748b;
+}
+/* --- Admin Dashboard Styles --- */
+
+.logout-link {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+.dashboard-container {
+    margin-top: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.styled-table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+/* Table base styles */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table tr, 
+.admin-table th, 
+.admin-table td {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+/* Typography and Cell Styling */
+.id-cell {
+    font-weight: bold;
+}
+
+.applicant-name {
+    font-weight: 600;
+}
+
+.applicant-subtext, 
+.date-cell {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.location-text {
+    font-weight: 500;
+}
+
+.bank-text {
+    font-size: 0.8rem;
+    color: #2563EB;
+}
+
+/* Badge System */
+.badge {
+    display: inline-block;
+}
+
+.badge-credit-good {
+    color: #2563EB;
+    background: #dbeafe;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-credit-bad {
+    color: #475569;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-status-approved {
+    color: #166534;
+    background: #dcfce7;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.badge-status-rejected {
+    color: #991b1b;
+    background: #fee2e2;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+}
 .float-badge {
     position: absolute;
     top: -20px;

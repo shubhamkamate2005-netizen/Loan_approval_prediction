@@ -1,33 +1,42 @@
+import os
+import pickle
 import numpy as np
 import pandas as pd
-import pickle
-from flask import jsonify, request
-from flask import Flask, render_template, request, url_for, redirect, session, flash
+from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify
 from flask_mysqldb import MySQL
-from flask import jsonify, request
+from dotenv import load_dotenv
+
 app = Flask(__name__)
 app.secret_key = 'super_secret_key'
-import os
-from dotenv import load_dotenv
 
 load_dotenv()  # This loads the password from the .env file
 
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': os.getenv('momdad@com'),  # Securely grabs password
-    'database': 'loan_database'
-}
+# FIX: Changed 'localhost' to '127.0.0.1' to prevent Windows Socket Errno 22
+app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'momdad@com'
+app.config['MYSQL_DB'] = 'loan_database'
 
 mysql = MySQL(app)
 
-# --- 2. LOAD MODEL ---
+# --- MODEL LOADING ---
 try:
-    with open('model.pkl', 'rb') as f:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(BASE_DIR, 'model.pkl')
+
+    with open(model_path, 'rb') as f:
         model = pickle.load(f)
-except FileNotFoundError:
-    print("Error: 'model.pkl' not found. Make sure you ran train_model.py")
+except Exception as e:
+    print("Model load error:", e)
     model = None
+
+
+# --- ROUTES ---
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 
 @app.route('/admin-login', methods=['GET', 'POST'])
 def admin_login():
@@ -36,19 +45,25 @@ def admin_login():
         username = request.form['username']
         password = request.form['password']
         
-        cur = mysql.connection.cursor()
-        # Check if username and password match
-        cur.execute("SELECT * FROM admins WHERE username = %s AND password = %s", (username, password))
-        admin = cur.fetchone()
-        cur.close()
+        try:
+            cur = mysql.connection.cursor()
+            # Check if username and password match
+            cur.execute("SELECT * FROM admins WHERE username = %s AND password = %s", (username, password))
+            admin = cur.fetchone()
+            cur.close()
 
-        if admin:
-            session['admin_logged_in'] = True
-            return redirect(url_for('applicants'))
-        else:
-            error = "Invalid Username or Password"
+            if admin:
+                session['admin_logged_in'] = True
+                return redirect(url_for('applicants'))
+            else:
+                error = "Invalid Username or Password"
+                
+        except Exception as e:
+            # If the database fails to connect, it will show this error on the webpage instead of crashing
+            error = f"Database connection error: {e}"
 
     return render_template('admin_login.html', error=error)
+
 
 @app.route('/logout')
 def logout():
@@ -56,22 +71,16 @@ def logout():
     flash("You have been logged out.", "info")
     return redirect(url_for('home'))
 
-# --- 3. ROUTES ---
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-# This route displays the Application Form (which is your predict.html file)
 @app.route('/apply')
 def apply():
     return render_template('predict.html') 
 
+
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
-    # If someone tries to visit /predict directly, send them to the form
-    # if request.method == 'GET':
-    #     return redirect(url_for('apply'))
+    if request.method == 'GET':
+        return redirect(url_for('apply'))
 
     if request.method == 'POST':
         try:
@@ -84,7 +93,6 @@ def predict():
             loan_purpose = request.form['loan_purpose']
             state = request.form['state']
             district = request.form['district']
-          
             bank_name = request.form['bank_name']
 
             # B. Get & Convert Model Features
@@ -94,7 +102,7 @@ def predict():
             loan_term = float(request.form['loan_amount_term'])
             credit = float(request.form['credit_history'])
             
-            # Manual Encoding (must match training data)
+            # Manual Encoding
             married = 1 if request.form['married'] == 'Yes' else 0
             
             dep_val = request.form['dependents']
@@ -107,26 +115,19 @@ def predict():
             property_area_val = prop_map[request.form['property_area']]
 
             # C. Predict
-            # --- C. PREDICT (Updated to fix Warning) ---
             status = "Pending"
             if model:
-                # 1. Define the exact column names used during training
                 feature_names = ['Married', 'Dependents', 'Education', 'Self_Employed', 
                                  'Applicant_Income', 'Coapplicant_Income', 'Loan_Amount', 
                                  'Loan_Amount_Term', 'Credit_History', 'Property_Area']
 
-                # 2. Prepare the data
                 features = [married, dependents, education, self_employed, 
                             income, co_income, loan_amt, loan_term, 
                             credit, property_area_val]
                 
-                # 3. Create a DataFrame (This fixes the warning)
                 df_features = pd.DataFrame([features], columns=feature_names)
-                
-                # 4. Predict
                 prediction = model.predict(df_features)
                 
-                # Handle Result
                 pred_str = str(prediction[0]).strip().upper()
                 if pred_str in ['1', 'Y', 'YES', 'APPROVED']:
                     status = "Approved"
@@ -137,11 +138,11 @@ def predict():
             cur = mysql.connection.cursor()
             cur.execute("""
                 INSERT INTO applicants 
-                (full_name, dob, email, phone, address,state, district, bank_name, loan_purpose, 
+                (full_name, dob, email, phone, address, state, district, bank_name, loan_purpose, 
                  applicant_income, coapplicant_income, loan_amount, loan_term, 
                  credit_history, property_area, loan_status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s) 
-            """, (full_name, dob, email, phone, address,state, district, bank_name, loan_purpose,
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) 
+            """, (full_name, dob, email, phone, address, state, district, bank_name, loan_purpose,
                   income, co_income, loan_amt, loan_term, 
                   credit, property_area_val, status))
             
@@ -152,6 +153,7 @@ def predict():
 
         except Exception as e:
             return f"Error processing application: {e}"
+
 
 @app.route('/status', methods=['GET', 'POST'])
 def check_status():
@@ -169,44 +171,46 @@ def check_status():
             
     return render_template('status.html', application=application, error=error)
 
+
 @app.route('/applicants')
 def applicants():
+    # SECURITY FIX: Ensure the user is actually logged in before showing the data
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM applicants ")
     data = cur.fetchall()
-    # after fetching the data came in the form of the tuple of tuple
-    # and it store the data by index [0,1,2,3,4....] important 
-    print(data)
     cur.close()
     return render_template('applicants.html', applicants=data)
+
 
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
 @app.route('/doc')
 def documentation():
     return render_template('doc.html')
-#chatbot
+
+
+# --- CHATBOT ---
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.json.get('message', '').lower()
     response = "I didn't understand that. Please try one of the suggested options."
 
-    # --- RULE 1: GREETINGS ---
     if any(x in user_input for x in ['hello', 'hi', 'hey']):
         response = "Hello! 👋 I am your Loan Assistant. Select a topic below or ask me a question."
 
-    # --- RULE 2: APPLY ---
     elif 'apply' in user_input:
         response = "To apply, click the 'Apply Now' tab in the top menu. It takes about 2 minutes to get a result! 🚀"
 
-    # --- RULE 3: DOCUMENTS ---
     elif 'document' in user_input:
         response = "You typically need: <br>1. <b>personal document</b><br>2. <b>applicant Income</b>(salary Details) <br>3. <b>credit Score</b>."
 
-    # --- RULE 4: STATUS ---
     elif 'status' in user_input:
-        # Check if they provided a number (e.g. "Status 5")
         import re
         match = re.search(r'\d+', user_input)
         if match:
@@ -228,5 +232,7 @@ def chat():
 
     return jsonify({'response': response})
 
+
 if __name__ == "__main__":
     app.run(debug=True)
+    
